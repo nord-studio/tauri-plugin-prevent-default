@@ -9,7 +9,7 @@ mod listener;
 mod shortcut;
 mod state;
 
-#[cfg(all(target_os = "windows", feature = "unstable-windows"))]
+#[cfg(all(feature = "unstable-windows"))]
 mod platform;
 
 use bitflags::bitflags;
@@ -24,7 +24,7 @@ pub use shortcut::{
   PointerShortcutBuilder, Shortcut, ShortcutKind,
 };
 
-#[cfg(all(target_os = "windows", feature = "unstable-windows"))]
+#[cfg(all(feature = "unstable-windows"))]
 pub use platform::windows::WindowsOptions;
 
 bitflags! {
@@ -85,7 +85,7 @@ pub struct Builder<R: Runtime> {
   shortcuts: Vec<Box<dyn Shortcut<R>>>,
   check_origin: Option<String>,
 
-  #[cfg(all(target_os = "windows", feature = "unstable-windows"))]
+  #[cfg(all(feature = "unstable-windows"))]
   platform: WindowsOptions,
 }
 
@@ -96,7 +96,7 @@ impl<R: Runtime> Default for Builder<R> {
       shortcuts: Vec::new(),
       check_origin: None,
 
-      #[cfg(all(target_os = "windows", feature = "unstable-windows"))]
+      #[cfg(all(feature = "unstable-windows"))]
       platform: WindowsOptions::default(),
     }
   }
@@ -154,7 +154,7 @@ impl<R: Runtime> Builder<R> {
 
   /// Windows-specific options.
   #[must_use]
-  #[cfg(all(target_os = "windows", feature = "unstable-windows"))]
+  #[cfg(all(feature = "unstable-windows"))]
   #[cfg_attr(docsrs, doc(cfg(feature = "unstable-windows")))]
   pub fn platform(mut self, options: WindowsOptions) -> Self {
     self.platform = options;
@@ -228,7 +228,7 @@ impl<R: Runtime> Builder<R> {
         });
     }
 
-    #[cfg(all(target_os = "windows", feature = "unstable-windows"))]
+    #[cfg(all(feature = "unstable-windows"))]
     {
       builder = builder.on_webview_ready(move |webview| {
         platform::windows::on_webview_ready(&webview, &self.platform);
